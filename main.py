@@ -9,6 +9,9 @@ istoric_comenzi = []
 # Dictionar pentru preturi
 preturi_dict = {produs: pret for produs, pret in preturi}
 
+# Dictionar pentru stoc, pentru a urmări câte produse sunt disponibile
+stoc_produse = {"papanasi": meniu.count("papanasi"), "ceafa": meniu.count("ceafa"), "guias": meniu.count("guias")}
+
 # 1. Comenzi - Simulare procesare comenzi
 print("Procesare comenzi:")
 for student in list(studenti):  # folosim o copie a listei pentru a modifica originalul în timp ce iterăm
@@ -17,6 +20,7 @@ for student in list(studenti):  # folosim o copie a listei pentru a modifica ori
         studenti.pop(0)  # eliminam primul student (FIFO)
         tavi.pop()  # eliminam o tava (LIFO)
         istoric_comenzi.append(comanda)  # actualizam istoricul comenzilor
+        stoc_produse[comanda] -= 1  # scadem din stoc produsul comandat
 
         # Afisam comanda procesata
         print(f"{student} a comandat {comanda}.")
@@ -37,7 +41,7 @@ print(f"Mai sunt {len(tavi)} tavi.")
 
 # Verificari de stoc
 for produs in ["ceafa", "papanasi", "guias"]:
-    disponibil = produs in meniu
+    disponibil = stoc_produse[produs] > 0  # verificam stocul ramas
     print(f"Mai este {produs}: {disponibil}.")
 
 print("\n")
